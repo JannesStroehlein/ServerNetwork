@@ -3,7 +3,8 @@
 # Server Network Visualizer
 [Example](#example) | [Features](#features) | [Installation](#installation) | [Usage](#usage) | [CLI Arguments](#command-line-arguments) | [Service Icons](#service-icons) | [License](#license) | [Acknowledgments](#acknowledgments)
 
-This project is a network visualizer that allows users to visualize the network of a server. The user can input the IP address of the server and the port number to connect to the server. The network visualizer will then display the network of the server in a graph format. The user can interact with the graph by zooming in and out, panning, and selecting nodes to view more information about them.
+If you self host with multiple servers you might come to the point where you wonder: "What does this thing?"
+This tool helps you to build an inventory of your services and their relationships so that if you wonder what something does you can just easily look it up.
 
 ### Example
 You can take a look at the data that produces the example graph at the top in the [example.yml](data/example.yml) file.
