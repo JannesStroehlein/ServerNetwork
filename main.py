@@ -1,18 +1,65 @@
+import argparse
+import os
 from glob import glob
 
 import yaml
 import networkx as nx
 
-from models.Connection import Connection
-from models.Service import Service
-from renderers.PyVisRenderer import PyVisRenderer
-from util import *
+from ServerNetwork.util.icons import load_icons, get_service_icon
+from ServerNetwork.models.Connection import Connection
+from ServerNetwork.models.Service import Service
+from ServerNetwork.renderers.PyVisRenderer import PyVisRenderer
+
+__version__ = '0.1.0'
+__author__ = 'Jannes Ströhlein'
+__description__ = 'Visualize the connections between your services'
+
+from ServerNetwork.util.services import get_service_size, get_title_string_for_service
 
 max_node_size = 25
 min_node_size = 8
 
+# The file path to the data files
+data_files = []
+image_dir = None
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(prog='ServerNetwork', description=__description__)
+    parser.add_argument('-v', '--version', action='version', version=__version__)
+
+    parser.add_argument('-d', '--data-file', type=str, required=False, help='The data file to use')
+    parser.add_argument('-D', '--data-dir', type=str, required=False, help='The data directory path')
+
+    parser.add_argument('-I', '--image-dir', type=str, required=False, help='The image directory path')
+
+    parser.add_argument('-o', '--output-file', type=str, required=False, help='The output file path')
+    global args
+    args = parser.parse_args()
+
+    if not args.data_file and not args.data_dir:
+        if os.path.exists('data'):
+            args.data_dir = 'data'
+        else:
+            raise ValueError('No data file or directory specified')
+
+    if args.data_file:
+        data_files.append(str(args.data_file))
+
+    if args.data_dir:
+        data_files.extend(glob(f'{args.data_dir}/**/*.y*ml', recursive=True))
+
+    if args.image_dir:
+        image_dir = args.image_dir
+    elif os.path.exists('icons'):
+        image_dir = 'icons'
+    else:
+        raise ValueError('No image directory specified')
+
+    if not args.output_file:
+        args.output_file = 'network.html'
+
 # Load the icons
-icons = load_icons()
+icons = load_icons(image_dir, os.path.dirname(args.output_file))
 #images = {k: Image.open(fname) for k, fname in icons.items()}
 #print(f'Loaded {len(images)} icons: {", ".join(images.keys())}')
 
@@ -20,7 +67,7 @@ icons = load_icons()
 data = dict()
 max_incident_count = 0
 
-for data_file in glob('data/**/*.y*ml', recursive=True):
+for data_file in data_files:
     print(f'{data_file}: Loading data...')
     with open(data_file) as file:
         file_data = yaml.load(file, Loader=yaml.FullLoader)
@@ -150,4 +197,4 @@ for connection in connections:
 
 
 #MathPlotLibRenderer.render(nx_graph)
-PyVisRenderer.render(nx_graph)
+PyVisRenderer.render(nx_graph, output_file=args.output_file)

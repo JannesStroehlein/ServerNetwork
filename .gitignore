@@ -171,6 +171,6 @@ cython_debug/
 .pypirc
 
 .idea
-data_testing
-icons_testing
+# Data for local debugging
+debug
 network.html

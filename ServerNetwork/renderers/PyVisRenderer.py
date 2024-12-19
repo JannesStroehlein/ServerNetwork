@@ -3,7 +3,7 @@ from pyvis.network import Network
 
 class PyVisRenderer:
     @staticmethod
-    def render(graph : MultiDiGraph):
+    def render(graph : MultiDiGraph, output_file : str):
         # Create the network
         net = Network(notebook=True, cdn_resources="remote",
                       directed=True, filter_menu=True,
@@ -65,12 +65,17 @@ class PyVisRenderer:
         net.options.edges.dashes = True
         net.options.edges.color = '#fafafa'
 
-        net.show("network.html")
+        net.show(output_file)
 
-        PyVisRenderer.enable_html_titles("network.html")
+        PyVisRenderer.enable_html_titles(output_file)
 
     @staticmethod
     def enable_html_titles(filename:str):
+        """
+        The PyVis library does not support HTML titles for nodes and edges.
+        This function adds the necessary code to the generated HTML file to support HTML titles.
+        :param filename: The filename of the HTML file
+        """
         with (open(filename, 'r') as file):
             file_data = file.read()
             tom_select_index = file_data.index("TomSelect")
@@ -142,7 +147,14 @@ class PyVisRenderer:
 
             
     @staticmethod
-    def get_json_data(data : str, line_start : str, line_end : str):
+    def get_json_data(data : str, line_start : str, line_end : str) -> (str, int, int):
+        """
+        Reads the data between two substrings
+        :param data: The raw data
+        :param line_start: The substring that single the start of the data
+        :param line_end: The substring that single the end of the data
+        :return: The data between the two substrings, the start index and the end index of the data with the start and end substrings
+        """
         start_index = data.index(line_start)
         end_index = start_index + data[start_index:].index(line_end)
         return data[start_index + len(line_start): end_index], start_index, end_index + len(line_end)
