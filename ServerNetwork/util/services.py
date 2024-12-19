@@ -1,6 +1,6 @@
 import math
 
-from models.Service import Service
+from ServerNetwork.models import Service
 
 def get_title_string_for_service(service : Service):
     """

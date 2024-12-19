@@ -1,7 +1,7 @@
 ![example.png](assets/example.png)
 
 # Server Network Visualizer
-[Example](#example) | [Features](#features) | [Installation](#installation) | [Usage](#usage) | [Service Icons](#service-icons) | [License](#license) | [Acknowledgments](#acknowledgments)
+[Example](#example) | [Features](#features) | [Installation](#installation) | [Usage](#usage) | [CLI Arguments](#command-line-arguments) | [Service Icons](#service-icons) | [License](#license) | [Acknowledgments](#acknowledgments)
 
 This project is a network visualizer that allows users to visualize the network of a server. The user can input the IP address of the server and the port number to connect to the server. The network visualizer will then display the network of the server in a graph format. The user can interact with the graph by zooming in and out, panning, and selecting nodes to view more information about them.
 
@@ -81,8 +81,18 @@ After you have create the YAML file you can run the network visualizer with the 
 ```shell
 python main.py
 ```
-
 The network visualizer will create a file called `network.html`. You can open this file in your browser to view the network graph.
+
+### Command Line Arguments
+The following command line arguments are available:
+
+| Short | Long          | Description                             | Example                              |
+|-------|---------------|-----------------------------------------|--------------------------------------|
+| -h    | --help        | Show the help message and exit          | `python main.py -h`                  |
+| -d    | --data-file   | Specify the data file to use            | `python main.py -d data/example.yml` |
+| -D    | --data-dir    | Specify the data directory to use       | `python main.py -D data`             |
+| -I    | --image-dir   | Specify the path to the image directory | `python main.py --image-path icons`  |
+| -o    | --output-file | Specify the output file                 | `python main.py -o my_network.html`  |
 
 ### Service Icons
 This tool can display icons for services. To do this you need to provide icons (.png or .svg) in the `icons` directory.
