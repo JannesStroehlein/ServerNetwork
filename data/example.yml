@@ -1,0 +1,50 @@
+services:
+  - name: MyCloud
+    host: node1
+    connections:
+      http/oauth2:
+        - Authentisch
+      ldap:
+        - LDAP Outpost
+      smtp:
+        - Docker-Mail-Server
+
+  - name: Authentisch
+    comment: "A simple and secure identity provider"
+    urls:
+      - 'https://auth.domain.com'
+    connections:
+      http/s3:
+        - FilePile:
+            comment: "Authentisch uses FilePile as storage backend for uploaded media (eg. app icons)"
+      smtp:
+        - Docker-Mail-Server
+
+  - name: Docker-Mail-Server
+    comment: "Docker Mail Server is a fullstack but simple mail server (smtp, imap, antispam, antivirus, etc.)"
+    urls:
+      - mail.domain.com
+      - smtp.domain.com
+      - imap.domain.com
+    ports: [25, 465, 993]
+    connections:
+      ldap:
+        - LDAP Outpost
+
+
+  - name: LDAP Outpost
+    comment: "The LDAP Outpost provides an LDAP interface to the Authentisch identity provider"
+    ports:
+      - 389
+    connections:
+      ldap:
+        - Authentisch
+
+  - name: FilePile
+    host: node2
+    comment: "FilePile is a high performance distributed object storage server, designed for large-scale private cloud infrastructure."
+    urls:
+      - 'https://io.domain.com'
+      - 'https://console.io.domain.com'
+
+
