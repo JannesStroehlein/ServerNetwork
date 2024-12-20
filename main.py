@@ -93,7 +93,7 @@ for data_file in data_files:
 
         print(f'{data_file}: Found {service_count} services with {connection_count} connections')
 
-        data.update(file_data)
+        data['services'] = data.get('services', []) + file_data['services']
 
 # Check if the data is valid
 if 'services' not in data:
